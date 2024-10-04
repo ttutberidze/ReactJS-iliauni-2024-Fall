@@ -1,0 +1,16 @@
+.header, .footer, .main, .sidebar {
+  border: 1px solid grey;
+  padding: 10px;
+  margin: 10px;
+}
+
+.content {
+  display: flex;
+}
+.sidebar {
+  flex: 1;
+}
+
+.main {
+  flex: 3;
+}
