@@ -1,31 +1,35 @@
-export default function Root() {
+import { createContact, getContacts } from "../contacts";
+import {useLoaderData, Form, redirect, NavLink, Outlet} from 'react-router-dom'
 
-  const contacts = [
-    {
-      id: '1',
-      avatar: '',
-      first: '',
-      last: '',
-      twitter: '',
-      notes: '',
-      favorite: false,
-    }
-  ];
+export const rootLoader = async () => {
+  return await getContacts()
+}
+
+export const createContactAction = async () => {
+  const contact = await createContact()
+  redirect(`/user/${contact.id}`)
+  return contact
+}
+
+export default function Root() {
+  const contacts = useLoaderData()
 
   return (
     <>
       <div id="sidebar">
         <h1>React Router Contacts</h1>
         <div>
-          <button type="submit">New</button>
+          <Form method="POST">
+            <button type="submit">New</button>
+          </Form>
         </div>
         <nav>
         {contacts.length ? (
           <ul>
             {contacts.map((contact) => (
               <li key={contact.id}>
-                <a
-                  href={`/user/${contact.id}`}
+                <NavLink
+                  to={`/user/${contact.id}`}
                 >
                   {contact.first || contact.last ? (
                     <>
@@ -35,7 +39,7 @@ export default function Root() {
                     <i>No Name</i>
                   )}{" "}
                   {contact.favorite && <span>★</span>}
-                </a>
+                </NavLink>
               </li>
             ))}
           </ul>
@@ -46,7 +50,9 @@ export default function Root() {
         )}
         </nav>
       </div>
-      <div id="detail"></div>
+      <div id="detail">
+        <Outlet />
+      </div>
     </>
   );
 }

@@ -1,13 +1,16 @@
+import {useLoaderData, Form} from 'react-router-dom'
+import { updateContact } from '../contacts';
+
+export const saveContactAction = async ({params, request}) => {
+  const formData = await request.formData();
+  const updates = Object.fromEntries(formData)
+  return await updateContact(params.userId, updates)
+}
+
 export default function EditContact() {
-  const contact = {
-    avatar: '',
-    first: '',
-    last: '',
-    twitter: '',
-    notes: '',
-  }
+  const contact = useLoaderData()
   return (
-    <div id="contact-form">
+    <Form method="POST" id="contact-form">
       <p>
         <span>Name</span>
         <input
@@ -56,6 +59,6 @@ export default function EditContact() {
         <button type="submit">Save</button>
         <button type="button">Cancel</button>
       </p>
-    </div>
+    </Form>
   );
 }

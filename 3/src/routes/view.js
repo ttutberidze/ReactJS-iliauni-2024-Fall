@@ -1,12 +1,14 @@
+import { getContact } from "../contacts";
+import {useLoaderData, Form} from 'react-router-dom'
+
+export const userLoader = async ({params}) => {
+  const contact = await getContact(params.userId)
+  return contact
+}
+
 export default function Contact() {
 
-  const contact = {
-    avatar: '',
-    first: '',
-    last: '',
-    twitter: '',
-    notes: '',
-  }
+  const contact = useLoaderData()
 
   return (
     <div id="contact">
@@ -43,7 +45,9 @@ export default function Contact() {
         {contact.notes && <p>{contact.notes}</p>}
 
         <div>
-          <button>Edit</button>
+          <Form action="edit">
+            <button>Edit</button>
+          </Form>
           <button>Delete</button>
         </div>
       </div>
